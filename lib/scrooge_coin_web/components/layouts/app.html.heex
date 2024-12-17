@@ -1,0 +1,23 @@
+<header class="px-4 sm:px-6 lg:px-8">
+  <div class="flex items-center justify-between border-b border-zinc-100 py-3 text-sm">
+    <div class="flex items-center gap-4">
+      <p class="bg-brand/5 text-brand rounded-full px-2 font-medium leading-6">
+        <.link navigate={~p"/"}>ScroogeCoin</.link>
+      </p>
+      <span class="hidden sm:block">Funding the revolution.</span>
+    </div>
+    <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
+      <.link navigate={~p"/"}>Blocks</.link>
+      <.link navigate={~p"/balances"}>Balances</.link>
+      <a class="hidden sm:block" href="/api/swagger/index.html">API Docs</a>
+      <a class="hidden sm:block" href="https://docs.scrooge.lol/">Docs</a>
+      <a class="hidden sm:block" href="https://github.com/jclement/scrooge-coin">Github</a>
+    </div>
+  </div>
+</header>
+<main class="">
+  <div class="mx-auto max-w-full">
+    <.flash_group flash={@flash} />
+    {@inner_content}
+  </div>
+</main>

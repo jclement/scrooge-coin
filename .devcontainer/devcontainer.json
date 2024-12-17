@@ -1,0 +1,39 @@
+{
+	"name": "Ubuntu",
+	"build": {"dockerfile": "Dockerfile"},
+
+	// Command to run after dev container *created*.  
+	"postCreateCommand": ". .devcontainer/post_create.sh",
+
+	// Command to run after the dev container starts.
+	"postStartCommand": ". .devcontainer/post_start.sh",
+
+	// Forward:
+	// 4000: HTTP server
+	// 5432: Postgres, so we can get at it with UI tools
+	"forwardPorts": [4000, 5432],
+
+	// If the .env file is missing, init.sh will create a new one from the sample
+	// because otherwise the container fails to startup
+	"initializeCommand": ". .devcontainer/init.sh",
+	
+	// Load my environment from the .env file (which MUST exist)
+	// useful for various secrets
+	"runArgs": ["--env-file",".env"],	
+
+	// VSCode plugins I'd really like for this environment
+	"customizations": {
+        "vscode": {
+            "extensions": [
+				"github.codespaces",
+				"tamasfe.even-better-toml",
+				"phoenixframework.phoenix",
+				"JakeBecker.elixir-ls",
+				"mechatroner.rainbow-csv",
+				"mikestead.dotenv",
+				"bradlc.vscode-tailwindcss",
+				"github.vscode-github-actions"
+			]
+        }
+	}
+}

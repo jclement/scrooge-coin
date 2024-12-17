@@ -1,0 +1,4 @@
+SECRET_KEY_BASE=
+TUNNEL_TOKEN=
+PHX_HOST=scrooge.lol
+

@@ -1,0 +1,227 @@
+{
+  "info": {
+    "version": "1.0",
+    "description": "API Documentation for ScroogeCoin.  The greatest ALT COIN on the Internet and the official coin to end the holidays!",
+    "title": "ScroogeCoin API"
+  },
+  "host": "localhost:4000",
+  "definitions": {
+    "Block": {
+      "description": "Represents a ScroogeCoin blockchain block",
+      "example": {
+        "data": [
+          {
+            "amount": 100,
+            "comment": "Payment for services",
+            "dest": "bob_pubkey",
+            "id": "tx1",
+            "sig": "digital_signature",
+            "source": "alice_pubkey"
+          }
+        ],
+        "hash": "xyz789",
+        "index": 1,
+        "nonce": 42,
+        "previous_hash": "abc123",
+        "timestamp": "2024-12-13T10:00:00Z"
+      },
+      "properties": {
+        "data": {
+          "description": "List of transactions included in the block",
+          "items": {
+            "$ref": "#/definitions/Transaction"
+          },
+          "type": "array"
+        },
+        "hash": {
+          "description": "Hash of the current block",
+          "type": "string"
+        },
+        "index": {
+          "description": "Index of the block in the blockchain",
+          "type": "integer"
+        },
+        "nonce": {
+          "description": "Nonce value used for mining the block",
+          "type": "integer"
+        },
+        "previous_hash": {
+          "description": "Hash of the previous block",
+          "type": "string"
+        },
+        "timestamp": {
+          "description": "Timestamp of block creation in ISO8601 format",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hash",
+        "nonce",
+        "previous_hash",
+        "data",
+        "timestamp",
+        "index"
+      ],
+      "title": "Block",
+      "type": "object"
+    },
+    "Transaction": {
+      "description": "Represents a single ScroogeCoin transaction",
+      "example": {
+        "amount": 100,
+        "comment": "Payment for services",
+        "dest": "bob_pubkey",
+        "id": "tx1",
+        "sig": "digital_signature",
+        "source": "alice_pubkey"
+      },
+      "properties": {
+        "amount": {
+          "description": "Transaction amount",
+          "type": "integer"
+        },
+        "comment": {
+          "description": "A comment describing the transaction",
+          "type": "string"
+        },
+        "dest": {
+          "description": "Destination account public key",
+          "type": "string"
+        },
+        "id": {
+          "description": "Transaction UUID",
+          "type": "string"
+        },
+        "sig": {
+          "description": "Digital signature of the source account.  <br>`sig = sign(\"{id}-{source}-{dest}-{amount}-{comment}\", sender_private_key)`",
+          "type": "string"
+        },
+        "source": {
+          "description": "Source account public key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sig",
+        "amount",
+        "dest",
+        "source",
+        "id"
+      ],
+      "title": "Transaction",
+      "type": "object"
+    },
+    "ListResponse": {
+      "description": "List of all the blocks",
+      "properties": {
+        "blocks": {
+          "description": "List of blocks",
+          "items": {
+            "$ref": "#/definitions/Block"
+          },
+          "type": "array"
+        },
+        "height": {
+          "description": "Number of Blocks on this Chain",
+          "type": "number"
+        }
+      },
+      "required": [
+        "blocks",
+        "height"
+      ],
+      "title": "List Response",
+      "type": "object"
+    },
+    "InfoResponse": {
+      "description": "Some details about the chain",
+      "properties": {
+        "difficulty": {
+          "description": "Current difficulty level",
+          "type": "number"
+        },
+        "height": {
+          "description": "Number of Blocks on this Chain",
+          "type": "number"
+        },
+        "previous_hash": {
+          "description": "Previous Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "previous_hash",
+        "difficulty",
+        "height"
+      ],
+      "title": "Info Response",
+      "type": "object"
+    }
+  },
+  "paths": {
+    "/api/blocks": {
+      "get": {
+        "description": "Get the entire block chain",
+        "operationId": "ScroogeCoinWeb.BlockController.list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/ListResponse"
+            }
+          }
+        },
+        "summary": "Get Blocks",
+        "tags": [
+          "Block"
+        ]
+      },
+      "post": {
+        "description": "Upload a freshly mined block",
+        "operationId": "ScroogeCoinWeb.BlockController.create",
+        "parameters": [
+          {
+            "description": "The block details",
+            "in": "body",
+            "name": "block",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "summary": "Upload a Block",
+        "tags": [
+          "Block"
+        ]
+      }
+    },
+    "/api/info": {
+      "get": {
+        "description": "What's up with this chain?",
+        "operationId": "ScroogeCoinWeb.InfoController.info",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/InfoResponse"
+            }
+          }
+        },
+        "summary": "Get Info",
+        "tags": [
+          "Info"
+        ]
+      }
+    }
+  },
+  "swagger": "2.0"
+}

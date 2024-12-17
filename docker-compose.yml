@@ -1,0 +1,14 @@
+services:
+  tunnel:
+    image: cloudflare/cloudflared
+    command: tunnel --no-autoupdate run
+    restart: unless-stopped
+    env_file: .env
+
+  server:
+    image: ghcr.io/jclement/scrooge-coin/server:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+
