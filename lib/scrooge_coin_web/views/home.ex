@@ -103,7 +103,7 @@ defmodule ScroogeCoinWeb.HomeLive do
     <!-- Transactions -->
           <h2 class="text-lg font-medium text-gray-800 mb-2">Transactions</h2>
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-gray-700 border-collapse border border-gray-300 text-[6pt]">
+            <table class="w-full text-left text-gray-700 border-collapse border border-gray-300 text-[6pt] md:text-sm">
               <thead class="bg-gray-100">
                 <tr>
                   <th class="border border-gray-300 px-2 py-0">ID</th>
