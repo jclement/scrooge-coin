@@ -18,6 +18,8 @@ defmodule ScroogeCoin.Chain do
   * Blocks must have a timestamp but, due to timetravel, they don't have to be in chronological order
   * A block is invalid if it contains invalid transactions (bad signature, overspend)
   * A block must have a valid signature
+  * A block must have a hash that meets the current difficulty 
+    (i.e. the hash starts with {difficulty} zeros)
   """
 
   # special implementation for the genesis block (only if the chain is empty)
@@ -39,6 +41,9 @@ defmodule ScroogeCoin.Chain do
     cond do
       !Block.valid?(block) ->
         {:error, "bogus block signature"}
+
+      !String.starts_with?(Block.hash(block), String.duplicate("0", chain.difficulty)) ->
+        {:error, "block hash does not meet difficulty"}
 
       hd(chain.blocks).index + 1 != block.index ->
         {:error, "not the next block"}

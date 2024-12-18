@@ -316,4 +316,44 @@ defmodule ScroogeCoin.ChainTest do
     c = Chain.add(c, genesis)
     assert {:error, "invalid transaction in this block"} = Chain.add(c, b1)
   end
+
+  test "incorrect difficulty" do
+    {priv1, pub1} = Account.generate("test1")
+    {_priv2, pub2} = Account.generate("test2")
+
+    c = %Chain{difficulty: 1}
+
+    genesis =
+      Block.mine(
+        %Block{
+          index: 0,
+          timestamp: ~U[2001-01-01 12:00:00Z],
+          data: [
+            %Transaction{dest: pub1, amount: 100},
+            %Transaction{dest: pub2, amount: 200}
+          ],
+          previous_hash: nil
+        },
+        c.difficulty
+      )
+
+    b1 =
+      Block.mine(
+        %Block{
+          index: 1,
+          timestamp: ~U[2001-01-01 12:00:00Z],
+          data: [
+            Transaction.sign(
+              %Transaction{source: pub1, dest: pub2, amount: 50, comment: "Eggnog"},
+              priv1
+            )
+          ],
+          previous_hash: genesis.hash
+        },
+        c.difficulty-1
+      )
+
+    c = Chain.add(c, genesis)
+    assert {:error, _} = Chain.add(c, b1)
+  end
 end
