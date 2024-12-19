@@ -37,6 +37,12 @@ defmodule ScroogeCoinWeb.HomeLive do
 
   defp transaction_matches(_transaction, nil), do: true
 
+  defp transaction_matches(transaction, "hacker") do
+    transaction.source != nil &&
+      transaction.source != "1eHesskxTf3J23zZCxNobsyaswKtAi84ozfkLyhvbso" &&
+      transaction.source != "6dLuH1CkteqaUFGdnvAtGTE9yPfyAZikLzYacmq5tNhz"
+  end
+
   defp transaction_matches(transaction, address) do
     transaction.dest == address || transaction.source == address
   end
@@ -50,7 +56,17 @@ defmodule ScroogeCoinWeb.HomeLive do
     <div class="p-6 bg-gray-50 min-h-screen">
       <!-- Chain Info -->
       <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">ScroogeChain Explorer</h1>
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">
+          ScroogeChain Explorer
+          <div :if={@address != "hacker"} class="float-right">
+            <.link patch="?a=hacker">
+              <button class="ml-4 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium py-1 px-3 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-1">
+                Show Suspicious Blocks
+              </button>
+            </.link>
+          </div>
+        </h1>
+
         <div class="grid grid-cols-2 gap-4 bg-white shadow rounded-lg p-4">
           <div>
             <span class="block text-sm font-medium text-gray-500">Current Difficulty</span>
